@@ -1,0 +1,46 @@
+version: "1"
+services:
+  application :
+     build :
+        context : .
+        dockerfile : Dockerfile
+     ports:
+        - "8003:8003"
+     volumes :
+        - .:/newfile
+     depends_on :
+       - redis
+       - jaegar
+     command: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+     environment :
+         REDIS_HOST : redis
+         JAEGAR_HOST : jaegar
+         
+     networks:
+        - mynewnet
+  redis :
+     image : redis:5.0.7
+     ports:
+        - "8004:8001"
+     volumes : 
+          - data_1:/var/lip/myvol
+     networks :
+          - mynewnetredis
+  jaegar :
+      image : jaegertracing/all-in-one:latest
+      ports:
+        - "5776:5776/udp"
+        - "16686:16686"
+      volumes :
+        - data_2:/var/lip/myvoljaegar
+      networks :
+        - mynewnetjaegar
+
+networks:
+  mynewnet:
+  mynewnetredis:
+  mynewnetjaegar:
+
+volumes:
+  data_1:
+  data_2:
