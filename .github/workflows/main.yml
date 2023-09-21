@@ -49,7 +49,7 @@ jobs:
           coverage xml
           
       - name: Coveralls
-        uses: AndreMiras/coveralls-python-action@develop
+        uses: Vinithkumar001/newpythondocker@main
         with:
           flag-name: Tests
 
